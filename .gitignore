@@ -26,3 +26,6 @@ dist-ssr
 # Firebase secrets
 .env
 .env.local
+
+# Claude Code
+.claude
