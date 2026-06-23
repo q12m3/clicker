@@ -1,31 +1,33 @@
-import WebApp from '@twa-dev/sdk'
-
-// true only when running inside Telegram
-export const isInTelegram = Boolean(WebApp.initData)
-
-export const tgUser = WebApp.initDataUnsafe?.user ?? null
-
-// Initialise the Mini App — call once at startup
-export function initTelegram() {
-  WebApp.ready()    // tell TG the app has loaded (removes loading indicator)
-  WebApp.expand()   // request full-screen height
-
+// Graceful wrapper — works both inside and outside Telegram
+const getTgWebApp = () => {
   try {
-    WebApp.setHeaderColor('#1a0533')
-    WebApp.setBackgroundColor('#070514')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (window as any)?.Telegram?.WebApp ?? null
   } catch {
-    // older TG clients may not support these
+    return null
   }
 }
 
-// Impact haptic (coin tap, button press)
-export function haptic(style: 'light' | 'medium' | 'heavy' = 'medium') {
-  if (!isInTelegram) return
-  WebApp.HapticFeedback.impactOccurred(style)
+const WebApp = getTgWebApp()
+
+export const isInTelegram = Boolean(WebApp?.initData)
+export const tgUser: { first_name?: string; photo_url?: string } | null =
+  WebApp?.initDataUnsafe?.user ?? null
+
+export function initTelegram() {
+  if (!WebApp) return
+  try { WebApp.ready()  } catch {}
+  try { WebApp.expand() } catch {}
+  try { WebApp.setHeaderColor('#1a0533')    } catch {}
+  try { WebApp.setBackgroundColor('#070514') } catch {}
 }
 
-// Notification haptic (level up, collect reward)
+export function haptic(style: 'light' | 'medium' | 'heavy' = 'medium') {
+  if (!isInTelegram) return
+  try { WebApp?.HapticFeedback?.impactOccurred(style) } catch {}
+}
+
 export function notifyHaptic(type: 'success' | 'warning' | 'error' = 'success') {
   if (!isInTelegram) return
-  WebApp.HapticFeedback.notificationOccurred(type)
+  try { WebApp?.HapticFeedback?.notificationOccurred(type) } catch {}
 }
