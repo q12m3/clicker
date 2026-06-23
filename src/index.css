@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* Prevent 300ms click delay on mobile */
+  touch-action: manipulation;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #070514;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+  user-select: none;
+  /* Support iPhone notch / Dynamic Island */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+/* Hide scrollbars globally */
+::-webkit-scrollbar { display: none; }
+
+/* Prevent long-press context menu on mobile */
+img, button { -webkit-touch-callout: none; }
