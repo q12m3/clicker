@@ -18,8 +18,23 @@ export function initTelegram() {
   if (!WebApp) return
   try { WebApp.ready()  } catch {}
   try { WebApp.expand() } catch {}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  try { (WebApp as any).requestFullscreen?.() } catch {}
   try { WebApp.setHeaderColor('#1a0533')    } catch {}
   try { WebApp.setBackgroundColor('#070514') } catch {}
+
+  // Sync --tg-viewport-height on every Telegram viewport resize (e.g. half-sheet → full)
+  const syncHeight = () => {
+    try {
+      document.documentElement.style.setProperty(
+        '--tg-viewport-height',
+        `${WebApp.viewportHeight}px`,
+      )
+      if (!WebApp.isExpanded) WebApp.expand()
+    } catch {}
+  }
+  try { WebApp.onEvent('viewportChanged', syncHeight) } catch {}
+  syncHeight()
 }
 
 export function haptic(style: 'light' | 'medium' | 'heavy' = 'medium') {
