@@ -23,20 +23,14 @@ export function initTelegram() {
   try { WebApp.setHeaderColor('#1a0533')    } catch {}
   try { WebApp.setBackgroundColor('#070514') } catch {}
 
-  // Sync --tg-viewport-height on every Telegram viewport resize (e.g. half-sheet → full)
-  let prevHeight = 0
-  const syncHeight = () => {
-    try {
-      const h = WebApp.viewportHeight
-      document.documentElement.style.setProperty('--tg-viewport-height', `${h}px`)
-      if (!WebApp.isExpanded) WebApp.expand()
-      // Sheet was dragged from half to full — reload so 100vh recalculates correctly
-      if (prevHeight > 0 && h - prevHeight > 100) window.location.reload()
-      prevHeight = h
-    } catch {}
-  }
-  try { WebApp.onEvent('viewportChanged', syncHeight) } catch {}
-  syncHeight()
+  // Re-expand if user somehow collapses the sheet
+  try {
+    WebApp.onEvent('viewportChanged', () => {
+      if (!WebApp.isExpanded) {
+        try { WebApp.expand() } catch {}
+      }
+    })
+  } catch {}
 }
 
 export function haptic(style: 'light' | 'medium' | 'heavy' = 'medium') {

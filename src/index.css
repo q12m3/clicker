@@ -4,30 +4,25 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  /* Prevent 300ms click delay on mobile */
   touch-action: manipulation;
 }
 
 html {
-  /* Telegram sets --tg-viewport-height and we sync it on viewportChanged;
-     fallback to 100dvh for plain browsers */
-  height: var(--tg-viewport-height, 100dvh);
-}
-
-body {
+  background: #070514;
   height: 100%;
-  overflow: hidden;
 }
 
 body {
+  /* position: fixed + inset: 0 fills the PHYSICAL viewport unconditionally —
+     immune to 100vh bugs, Telegram sheet transitions, and safe-area gaps */
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
   background: #070514;
   font-family: 'Segoe UI', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior: none;
   user-select: none;
-  /* Support iPhone notch / Dynamic Island */
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
 }
 
 #root {

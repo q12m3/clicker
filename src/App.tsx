@@ -89,15 +89,15 @@ export default function App() {
 
   return (
     <div
-      className="w-full flex items-center justify-center bg-[#070514]"
-      style={{ minHeight: 'var(--tg-viewport-height, 100dvh)' }}
+      className="w-full h-full flex items-center justify-center bg-[#070514]"
+      style={{
+        paddingTop:    'env(safe-area-inset-top)',
+        paddingBottom: 'env(safe-area-inset-bottom)',
+      }}
     >
       <div
-        className="relative w-full max-w-[430px] max-h-[932px] flex flex-col overflow-hidden"
-        style={{
-          height: 'var(--tg-viewport-height, 100dvh)',
-          background: 'linear-gradient(180deg, #1a0533 0%, #0d0621 40%, #070514 100%)',
-        }}
+        className="relative w-full h-full max-w-[430px] flex flex-col overflow-hidden"
+        style={{ background: 'linear-gradient(180deg, #1a0533 0%, #0d0621 40%, #070514 100%)' }}
       >
         {/* Ambient glows */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full bg-purple-600/20 blur-3xl pointer-events-none" />
